@@ -7,10 +7,10 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: setup
+          name: Install Make
           command: apk add --no-cache make
       - run:
-          name: build
+          name: Make All
           command: make all
       # - deploy:
       #     name: push
@@ -21,4 +21,3 @@ jobs:
       #         docker tag app "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
       #         docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
       #       fi
-
