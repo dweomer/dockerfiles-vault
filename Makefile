@@ -1,15 +1,17 @@
 # GNUmakefile
 
 REPOSITORY = dweomer/vault
-LATEST     = $(notdir $(realpath tags/latest))
-TAGS       = $(notdir $(wildcard tags/*))
-VERSION    = $(shell cat tags/latest)
+VERSIONS   = $(notdir $(wildcard versions/*))
+LATEST     = $(notdir $(realpath versions/latest))
 
-export REPOSITORY LATEST TAGS
+export REPOSITORY VERSIONS LATEST
 
-all: $(TAGS)
+all: $(VERSIONS)
 
 build:
+ifndef VERSION
+	$(error VERSION is required)
+endif
 	docker build \
 		--build-arg VAULT_VERSION=$(VERSION) \
 		--pull \
@@ -18,9 +20,9 @@ build:
 		.
 
 latest: $(LATEST)
-	docker tag $(REPOSITORY):$(shell cat tags/$<) $(REPOSITORY):$@
+	docker tag $(REPOSITORY):$< $(REPOSITORY):$@
 
-$(filter-out latest,$(TAGS)):
-	@make build VERSION=$(shell cat tags/$@)
+$(filter-out latest,$(VERSIONS)):
+	@make build VERSION=$@
 
-.PHONY: all build $(TAGS)
+.PHONY: all build $(VERSIONS)
