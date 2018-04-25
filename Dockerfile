@@ -2,7 +2,7 @@ FROM dweomer/hashibase as hashibase
 
 WORKDIR /tmp
 
-ARG VAULT_VERSION=0.9.4
+ARG VAULT_VERSION=0.10.0
 
 ADD https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_SHA256SUMS .
 ADD https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_SHA256SUMS.sig .
