@@ -2,7 +2,7 @@ FROM dweomer/hashibase as hashibase
 
 WORKDIR /tmp
 
-ARG VAULT_VERSION=0.10.1
+ARG VAULT_VERSION=0.10.2
 
 ADD https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_SHA256SUMS .
 ADD https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_SHA256SUMS.sig .
@@ -15,8 +15,8 @@ RUN vault version
 
 FROM alpine
 
-ARG VAULT_GID=1337
-ARG VAULT_UID=1337
+ARG VAULT_GID=8201
+ARG VAULT_UID=8200
 
 RUN set -x \
  && apk add --no-cache \
@@ -28,6 +28,6 @@ RUN set -x \
 
 COPY --from=hashibase /usr/local/bin/* /usr/local/bin/
 
-USER vault
-ENTRYPOINT ["vault"]
+# USER vault
+ENTRYPOINT ["dumb-init", "--", "su-exec", "vault:vault", "vault"]
 CMD ["help"]
